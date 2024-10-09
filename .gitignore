@@ -1,0 +1,4 @@
+audiofiles/*
+__pycache__
+ffmpeg/*
+env.py
