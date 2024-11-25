@@ -46,3 +46,6 @@ def getTitle(url):
 def getThumbail(url):
     video_id = convertURLtoID(url)
     return f'https://img.youtube.com/vi/{video_id}/mqdefault.jpg'
+
+def nowPlaying(musicObj):
+    return f'Now Playing **{musicObj.song_title}**\n{musicObj.song_thumbail}'

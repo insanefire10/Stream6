@@ -10,10 +10,8 @@ import time
 import env
 
 discord_TOKEN = env.discord_key
-ffmpeg_executable_path = './ffmpeg/bin/ffmpeg.exe'
 deny_list = []
 voice = 'NA'
-
 
 client = discord.Client(intents=discord.Intents.default())
 tree = discord.app_commands.CommandTree(client)
@@ -63,10 +61,18 @@ async def play(interaction: discord.Interaction, url: str):
     if(len(serverQueue.musicArr) == 1):
         await serverQueue.queuePlayer(interaction, client)
 
-@tree.command(name='stop', description='Stop playing music!')
+@tree.command(name='skip', description='Skip to next song in queue')
 async def stop(interaction: discord.Interaction):
-     global voice
-     voice.stop()
+    serverQueue = musicqueue.findGuildQueue(interaction.guild.id, guildQueue)
+    if(serverQueue is None):
+        await interaction.response.send_message("I am not in a voice channel!")
+        return
+    if(serverQueue.audio is None):
+        await interaction.response.send_message("I am currently not playing a song!")
+        return
+    serverQueue.audio.stop()
+    await interaction.response.send_message(f'Skipping')
+
 
 def printData(allGuilds):
     for x in allGuilds:
